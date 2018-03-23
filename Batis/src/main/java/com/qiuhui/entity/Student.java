@@ -1,5 +1,7 @@
 package com.qiuhui.entity;
 
+import java.util.List;
+
 /**
  *@Description:Student实体类
  *@Author: 邱志辉
@@ -10,6 +12,36 @@ public class Student {
     private  String name;
     private  String email;
     private  int age;
+
+    private School school;
+    private List<Tag> tagList;
+
+    public List<Tag> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", school=" + school +
+                '}';
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
 
     public int getId() {
         return id;
@@ -43,13 +75,5 @@ public class Student {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                '}';
-    }
+
 }

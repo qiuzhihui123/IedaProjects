@@ -17,4 +17,6 @@ public interface StudentMapper {
     List<Student> page1(int start,int size);
     List<Student> page2(Map<String,Integer> map);
     List<Student> page3(@Param("start")int start, @Param("size")int size);
+    List<Student> findStudentBySchoolId(int schoolId);
+    Student findStudentWithTags(int studentId);
 }

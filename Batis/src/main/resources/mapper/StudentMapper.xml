@@ -5,6 +5,50 @@
 
 <mapper namespace="com.qiuhui.mapper.StudentMapper">
 
+
+    <select id="findStudentWithTags" resultMap="studentTagMap">
+        select s.id,s.student_name,s.age,s.email,st.tid,t.tag_name
+        from t_student s
+        inner join t_student_tag st
+        inner join t_tag  t
+        on s.id = st.sid
+        and st.tid = t.id
+        where s.id =#{id}
+    </select>
+
+    <resultMap id="studentTagMap" type="com.qiuhui.entity.Student" extends="baseStudent">
+        <collection property="tagList" ofType="com.qiuhui.entity.Tag">
+            <id column="tid " property="id"/>
+            <result column="tag_name" property="tagName"/>
+        </collection>
+    </resultMap>
+
+    <select id="findStudentBySchoolId" resultMap="studentMap">
+
+        select
+        stu.id,stu.student_name,stu.age,stu.email,sch.school_name,sch.tel
+        from t_student stu
+        inner join t_school sch
+        on stu.school_id = sch.id
+        where sch.id = #{id}
+    </select>
+
+    <resultMap id="baseStudent" type="com.qiuhui.entity.Student">
+        <id column="id" property="id"/>
+        <result column="student_name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="email" property="email"/>
+    </resultMap>
+
+    <resultMap id="studentMap" type="com.qiuhui.entity.Student" extends="baseStudent">
+        <association property="school" javaType="com.qiuhui.entity.School">
+            <id column="id" property="id"/>
+            <result column="school_name" property="schoolName"/>
+            <result column="tel" property="tel"/>
+        </association>
+    </resultMap>
+
+
     <select id="findStudentById" parameterType="int" resultType="Student">
 
         select id,name,age,email from t_student where id = #{id}
