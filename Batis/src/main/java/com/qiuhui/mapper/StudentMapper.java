@@ -1,24 +1,20 @@
 package com.qiuhui.mapper;
 
 import com.qiuhui.entity.Student;
-/**
- *@Description:Student的mapper接口
- *@Author: 邱志辉
- *@Date 2018/3/21 0021下午 10:50
- */
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
+
 public interface StudentMapper {
 
-    /** 
-     *描述:接收一个id返回一个Student对象
-     *@参数:[id]查询相应id的学生
-     *@返回值：com.qiuhui.entity.Student类的对象
-     */
+
     Student findStudentById(Integer id);
-    
-    /** 
-     *描述:向数据库插入一条student数据
-     *@参数:[]
-     *@返回值void
-     */
-    void insertStudent();
+    void update(Student student);
+    List<Student> findAll();
+    void insertStudent(Student student);
+    void delete(Integer id);
+    List<Student> page1(int start,int size);
+    List<Student> page2(Map<String,Integer> map);
+    List<Student> page3(@Param("start")int start, @Param("size")int size);
 }

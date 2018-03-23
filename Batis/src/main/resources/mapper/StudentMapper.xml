@@ -11,7 +11,38 @@
 
     </select>
 
-    <insert id="insertStudent" parameterType="Student">
+    <select id="findAll" resultType="Student">
 
+        select * from t_student
+
+    </select>
+
+
+    <insert id="insertStudent" parameterType="Student" useGeneratedKeys="true" keyProperty="id">
+      insert t_student (name,age,email) values (#{name},#{age},#{email});
     </insert>
+
+    <update id="update" parameterType="Student" >
+
+        update t_student set name = #{name} where id =#{id}
+
+    </update>
+
+    <select id="page1"  resultType="student">
+        select * from t_student limit #{param1},#{param2}
+    </select>
+
+    <select id="page2"  resultType="student">
+        select * from t_student limit #{start},#{size}
+    </select>
+
+    <select id="page3"  resultType="student">
+        select * from t_student limit #{start},#{size}
+    </select>
+
+    <delete id="delete" parameterType="int" >
+        delete from t_student where id = #{id}
+
+    </delete>
+
 </mapper>
