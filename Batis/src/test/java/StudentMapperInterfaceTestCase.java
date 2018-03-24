@@ -39,7 +39,7 @@ public class StudentMapperInterfaceTestCase {
         Student student = new Student( );
         student.setAge(12);
         student.setEmail("lkfjlkasjf@kljlj");
-        student.setName("哈哈小傻瓜");
+        student.setStudentName("哈哈小傻瓜");
         studentMapper.insertStudent(student);
         System.out.println("我存入后返回的id是"+student.getId());
 
@@ -48,7 +48,7 @@ public class StudentMapperInterfaceTestCase {
     @Test
     public void update(){
         Student student = studentMapper.findStudentById(2);
-        student.setName("你是不是傻");
+        student.setStudentName("你是不是傻");
         studentMapper.update(student);
 
     }

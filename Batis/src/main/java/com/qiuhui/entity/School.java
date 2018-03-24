@@ -1,7 +1,11 @@
 package com.qiuhui.entity;
 
-public class School {
+import java.io.Serializable;
 
+public class School implements Serializable{
+
+
+    private static final long serialVersionUID =1L;
     private Integer id;
     private String schoolName;
     private String tel;

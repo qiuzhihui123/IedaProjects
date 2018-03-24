@@ -6,6 +6,8 @@
 <mapper namespace="com.qiuhui.mapper.StudentMapper">
 
 
+    <cache/>
+
     <select id="findStudentWithTags" resultMap="studentTagMap">
         select s.id,s.student_name,s.age,s.email,st.tid,t.tag_name
         from t_student s
@@ -49,9 +51,9 @@
     </resultMap>
 
 
-    <select id="findStudentById" parameterType="int" resultType="Student">
+    <select id="findStudentById" parameterType="int" resultType="Student">  <!--useCache="false"-->
 
-        select id,name,age,email from t_student where id = #{id}
+        select id,student_name,age,email from t_student where id = #{id}
 
     </select>
 

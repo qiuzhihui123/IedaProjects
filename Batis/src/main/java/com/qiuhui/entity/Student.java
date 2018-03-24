@@ -1,5 +1,6 @@
 package com.qiuhui.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,9 +8,11 @@ import java.util.List;
  *@Author: 邱志辉
  *@Date 2018/3/21 0021下午 10:57
  */
-public class Student {
+public class Student implements Serializable{
+
+    private static final long servialVersionUID =1L;
     private int id;
-    private  String name;
+    private  String studentName;
     private  String email;
     private  int age;
 
@@ -28,7 +31,7 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + studentName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 ", school=" + school +
@@ -51,12 +54,12 @@ public class Student {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
     public String getEmail() {

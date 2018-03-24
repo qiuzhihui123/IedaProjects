@@ -30,7 +30,7 @@ public class StudentMapperTestCase {
         Student student = new Student( );
         student.setAge(12);
         student.setEmail("lkfjlkasjf@kljlj");
-        student.setName("哈哈小傻瓜");
+        student.setStudentName("哈哈小傻瓜");
         sqlSession.insert("com.qiuhui.mapper.StudentMapper.insertStudent",student);
         System.out.println("我存入后返回的id是"+student.getId());
 
@@ -39,7 +39,7 @@ public class StudentMapperTestCase {
     @Test
     public void update(){
         Student student = sqlSession.selectOne("com.qiuhui.mapper.StudentMapper.findStudentById",1);
-        student.setName("你是不是傻");
+        student.setStudentName("你是不是傻");
         sqlSession.update("com.qiuhui.mapper.StudentMapper.update",student);
 
     }
