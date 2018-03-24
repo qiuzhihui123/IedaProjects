@@ -4,6 +4,7 @@ import com.qiuhui.mapper.StudentSingleFormMapper;
 import com.qiuhui.util.SqlSessionUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class StudentMapperCacheTestCase {
@@ -12,7 +13,7 @@ public class StudentMapperCacheTestCase {
     private StudentSingleFormMapper mapper;
 
 
-    @After
+    @Before
     public void init(){
         sqlSession = SqlSessionUtil.getSqlSession(true);
         mapper = sqlSession.getMapper(StudentSingleFormMapper.class);
@@ -20,7 +21,7 @@ public class StudentMapperCacheTestCase {
 
     @Test
     public void findStudentWithSchoolBySingleForm(){
-        Student student = mapper.findStudentWithSchoolBySingleFormById(3);
+        Student student = mapper.findStudentWithSchoolBySingleFormById(2);
         System.out.println(student);
 
     }

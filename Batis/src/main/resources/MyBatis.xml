@@ -34,6 +34,8 @@
     <mappers>
         <mapper resource="mapper/StudentMapper.xml"/>
         <mapper resource="mapper/MovieMapper.xml"/>
+        <mapper resource="mapper/SchoolMapper.xml"/>
+        <mapper resource="mapper/StudentSingleFormMapper.xml"/>
     </mappers>
 
 </configuration>
