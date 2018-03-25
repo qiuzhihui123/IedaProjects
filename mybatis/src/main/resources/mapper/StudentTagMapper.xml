@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qiuhui.mapper.StudentTagMapper">
+
+    <select id="findStudentTag" parameterType="int" resultType="StudentTagMap">
+
+        select * from t_student_tag where sid = #{id}
+
+    </select>
+
+    <resultMap id="StudentTagMap" type="Tag" >
+
+        <association property="" column="tid" select="com.qiuhui.mapper.TagMapper.findTagById"/>
+
+    </resultMap>
+
+</mapper>

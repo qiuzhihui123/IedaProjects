@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+        <settings>
+            <setting name="mapUnderscoreToCamelCase" value="true"/>
+        </settings>
+
+        <typeAliases>
+            <typeAlias type="com.qiuhui.entity.Student" alias="Student"/>
+            <typeAlias type="com.qiuhui.entity.School" alias="School"/>
+            <typeAlias type="com.qiuhui.entity.Tag" alias="Tag"/>
+            <typeAlias type="com.qiuhui.entity.Movie" alias="Movie"/>
+            <typeAlias type="com.qiuhui.entity.StudentTag" alias="StudentTag"/>
+        </typeAliases>
+
+        <environments default="test">
+            <environment id="test">
+                <transactionManager type="JDBC"></transactionManager>
+                <dataSource type="POOLED">
+                    <property name="driver" value="com.mysql.jdbc.Driver"/>
+                    <property name="url" value="jdbc:mysql:///db_mybatis"/>
+                    <property name="username" value="root"/>
+                    <property name="password" value="929813"/>
+                </dataSource>
+            </environment>
+        </environments>
+
+        <mappers>
+            <mapper resource="mapper/StudentSchool.xml"/>
+            <mapper resource="mapper/SchoolMapper.xml"/>
+            <mapper resource="mapper/StudentSchoolSingleFormMapper.xml"/>
+            <mapper resource="mapper/StudentTagMapper.xml"/>
+            <mapper resource="mapper/TagMapper.xml"/>
+            <mapper resource="mapper/Movie.xml"/>
+            <!--<mapper resource=""/>
+            <mapper resource=""/>
+            <mapper resource=""/>-->
+        </mappers>
+
+    
+</configuration>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qiuhui.mapper.StudentSchoolSingleFormMapper">
+    
+    <resultMap id="BaseMap" type="Student" >
+        <id column="id" property="id"/>
+        <result column="student_name" property="studentName"/>
+        <result column="age" property="age"/>
+        <result column="email" property="email"/>
+    </resultMap>
+
+
+
+
+    <select id="findStudentWithTags" parameterType="int" resultMap="StudentTagMap">
+        select * from t_student where id = #{id}
+    </select>
+
+    <resultMap id="StudentTagMap" type="Student" extends="BaseMap">
+
+        <collection property="tagList" column="id" select="com.qiuhui.mapper.StudentTagMapper.findStudentTag"/>
+
+    </resultMap>
+
+    
+    <select id="findStudentSchoolById" parameterType="int" resultMap="StudentSchoolMap">
+
+         select * from t_student where id = #{id}
+
+    </select>
+
+    <resultMap id="StudentSchoolMap" type="Student" extends="BaseMap">
+
+        <association property="school" javaType="School" column="school_id" select="com.qiuhui.mapper.SchoolMapper.findById"></association>
+
+    </resultMap>
+    
+</mapper>

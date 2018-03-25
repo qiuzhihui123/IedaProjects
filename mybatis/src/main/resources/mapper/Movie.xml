@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qiuhui.mapper.MovieMapper">
+    
+    
+    <insert id="saveMovies" parameterType="list">
+        insert into movie (title) values 
+         
+        <foreach collection="movieList" item="movie" separator=",">
+            (#{movie.title})
+        </foreach>
+        
+    </insert>
+
+    <select id="findMovieByNameAndDirector" resultType="Movie">
+        select * from movie
+
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="title != null and title != ''">
+                title like  #{title}
+            </if>
+
+            <if test="director != null and director != ''">
+                and director like #{director}
+            </if>
+
+        </trim>
+
+
+
+        <!--<where>
+            <if test="title != null and title != ''">
+                title like  #{title}
+            </if>
+
+            <if test="director != null and director != ''">
+                and director like #{director}
+            </if>
+        </where>-->
+
+    </select>
+
+</mapper>
