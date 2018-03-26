@@ -1,6 +1,10 @@
 package com.qiuhui.entity;
 
-public class Movie {
+import java.io.Serializable;
+
+public class Movie implements Serializable{
+
+    private static final long serialVersionUID = 2L;
 
     private Integer id;
     private String title;

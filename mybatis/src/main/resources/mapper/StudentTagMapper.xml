@@ -12,9 +12,12 @@
     </select>
 
     <resultMap id="StudentTagMap" type="Tag" >
-
+            
+        <discriminator javaType="">
+            <case value=""></case>
+        </discriminator>
         <association property="" column="tid" select="com.qiuhui.mapper.TagMapper.findTagById"/>
-
+    
     </resultMap>
 
 </mapper>

@@ -30,15 +30,17 @@
         </environments>
 
         <mappers>
-            <mapper resource="mapper/StudentSchool.xml"/>
+            <!--<mapper resource="mapper/StudentSchool.xml"/>
             <mapper resource="mapper/SchoolMapper.xml"/>
             <mapper resource="mapper/StudentSchoolSingleFormMapper.xml"/>
             <mapper resource="mapper/StudentTagMapper.xml"/>
             <mapper resource="mapper/TagMapper.xml"/>
+            <mapper resource="mapper/Movie.xml"/>-->
             <mapper resource="mapper/Movie.xml"/>
-            <!--<mapper resource=""/>
-            <mapper resource=""/>
-            <mapper resource=""/>-->
+            <mapper class="com.qiuhui.mapper.StudentMapper"/>
+            <mapper class="com.qiuhui.mapper.StudentSchoolMapper"/>
+            <!--<mapper class="com.qiuhui.mapper.MovieMapper"/>-->
+
         </mappers>
 
     
