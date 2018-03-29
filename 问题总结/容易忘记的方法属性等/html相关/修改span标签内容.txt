@@ -1,1 +1,0 @@
-②span.innerText = "√"  修改span标签的内容  
