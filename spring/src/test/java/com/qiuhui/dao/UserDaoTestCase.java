@@ -9,7 +9,7 @@ public class UserDaoTestCase {
 
     @Test
     public void create(){
-//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+     // ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         ClassPathXmlApplicationContext applicationContext =  new ClassPathXmlApplicationContext("applicationContext.xml");
 
