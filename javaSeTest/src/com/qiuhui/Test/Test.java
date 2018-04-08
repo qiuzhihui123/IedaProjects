@@ -1,6 +1,8 @@
 package com.qiuhui.Test;
 
-/** 
+import java.lang.reflect.Proxy;
+
+/**
   * @Description: 
   * @author 
   * @date 2018/3/21 0021下午 4:58
@@ -12,6 +14,6 @@ public class Test {
      *@返回值void
      */
     public static void main(String[] args) {
-        System.out.println("hahaha");
+        Proxy.newProxyInstance();
     }
 }
