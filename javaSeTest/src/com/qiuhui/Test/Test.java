@@ -14,6 +14,6 @@ public class Test {
      *@返回值void
      */
     public static void main(String[] args) {
-        Proxy.newProxyInstance();
+        System.out.println("哈哈哈");
     }
 }
