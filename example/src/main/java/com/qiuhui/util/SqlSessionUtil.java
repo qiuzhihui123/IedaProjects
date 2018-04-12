@@ -10,14 +10,14 @@ import java.io.Reader;
 
 public class SqlSessionUtil {
 
-    private  static SqlSessionFactory factory;
+    private static SqlSessionFactory factory;
 
     static{
         try {
             Reader reader = Resources.getResourceAsReader("mybatis-config.xml");
-            factory = new SqlSessionFactoryBuilder().build(reader);
-
-        } catch (IOException e){
+            SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+            factory = builder.build(reader);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
