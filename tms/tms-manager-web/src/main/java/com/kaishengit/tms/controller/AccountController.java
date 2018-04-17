@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -60,6 +57,24 @@ public class AccountController {
 
         redirectAttributes.addFlashAttribute("message","保存成功");
         return "redirect:/manage/account";
+    }
+
+    /**
+     * @描述:编辑account
+     * @参数:[id(需要编辑的account对象的id)]
+     * @返回值java.lang.String 编辑页面
+     */
+    @GetMapping("/{id:\\d+}/edit")
+    public String newAccount(@PathVariable(required = false) Integer id,Model model) {
+        List<Roles> rolesList = rolePermissionService.findAllRolesWithPermission();
+
+        //找找相应的account并封装它具有的角色在rolesList属性上
+        Account account = accountService.findAccountWithRoles(id);
+        System.out.println(account);
+
+        model.addAttribute("account",account);
+        model.addAttribute("rolesList",rolesList);
+        return "manage/account/edit";
     }
 
 }

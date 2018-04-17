@@ -29,4 +29,6 @@ public interface AccountMapper {
     int updateByPrimaryKey(Account record);
 
     List<Account> findAllAccountWithRoles();
+
+    Account findAccountWithRoles(Integer id);
 }

@@ -173,13 +173,34 @@
         order by account.id desc
 
     </select>
+
+    <select id="findAccountWithRoles" resultMap="accountWithRolesMap">
+        SELECT
+        account.*, roles.id AS rolesId,
+        roles.roles_code,
+        roles.roles_name,
+        roles.create_time AS rolesCreateTime,
+        roles.update_time AS rolesUpdateTime
+        FROM
+        account
+        LEFT JOIN account_roles ON account.id = account_roles.account_id
+        LEFT JOIN roles ON roles.id = account_roles.roles_id where account.id = #{id}
+        order by account.id desc
+
+    </select>
+
+    <resultMap id="BaseAccountWithRolesMap" type="com.kaishengit.tms.entity.Account">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+        <result column="account_mobile" jdbcType="VARCHAR" property="accountMobile" />
+
+    </resultMap>
     
-    <resultMap id="accountWithRolesMap" type="Account" extends="BaseResultMap">
+    <resultMap id="accountWithRolesMap" type="Account" extends="BaseAccountWithRolesMap">
         <collection property="rolesList" ofType="Roles">
             <id property="id" column="rolesId"/>
-            <result property="updateTime" column="rolesUpdateTime"/>
-            <result property="createTime" column="rolesCreateTime"/>
-            <result property="rolesCode" column="roles_code"/>
+
+
             <result property="rolesName" column="roles_name"/>
         </collection>
     </resultMap>

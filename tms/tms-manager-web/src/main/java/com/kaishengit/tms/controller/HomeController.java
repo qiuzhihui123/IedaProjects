@@ -3,7 +3,11 @@ package com.kaishengit.tms.controller;
 import com.kaishengit.tms.entity.Account;
 import com.kaishengit.tms.exception.ServiceException;
 import com.kaishengit.tms.service.AccountService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -26,19 +30,30 @@ public class HomeController {
 
     @Autowired
     private AccountService accountService;
+    @Value("${salt}")
+    private String salt;
 
 
 
-    /** 
+    /**
      *描述:系统登录页面
      */
     @GetMapping("/")
     public  String home(@CookieValue(required = false) String account,Model model){
-        if(StringUtils.isNotEmpty(account)) {
-            model.addAttribute("account", account);
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated()){
+            subject.logout();
         }
+        if(subject.isRemembered()){
+            return "/home";
+        }
+
+        /*if(StringUtils.isNotEmpty(account)) {
+            model.addAttribute("account", account);
+        }*/
         return "index";
     }
+
 
     /**
      *描述:系统登录
@@ -51,33 +66,30 @@ public class HomeController {
                         HttpServletResponse resp,
                         HttpSession session,
                         RedirectAttributes redirectAttributes){
-
-        if(StringUtils.isNotEmpty(remember)){
-            Cookie cookie = new Cookie("account",accountMobile);
-            cookie.setDomain("localhost");
-            cookie.setPath("/");
-            cookie.setMaxAge(60*60*24);
-            resp.addCookie(cookie);
-        }else {
-            Cookie[] cookies = req.getCookies();
-            for(Cookie cookie : cookies){
-                if("account".equals(cookie.getName())){
-                    cookie.setMaxAge(0);
-                   resp.addCookie(cookie);
-                }
-            }
-        }
-
+        //创建subject
+        Subject subject = SecurityUtils.getSubject();
         String requestIp = req.getRemoteAddr();
-        try {
-            Account acc = accountService.login(accountMobile, password, requestIp);
-            session.setAttribute("currAccount",acc);
+        System.out.println(salt);
+        //根据帐号密码验证登录
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(accountMobile,
+                DigestUtils.md5Hex(password + salt),
+                remember != null,
+                requestIp);
+
+        try{
+            subject.login(usernamePasswordToken);
             return "redirect:/home";
-        }catch (ServiceException e){
-            redirectAttributes.addFlashAttribute("mobile",accountMobile);
-            redirectAttributes.addFlashAttribute("message",e.getMessage());
-            return "redirect:/";
+        }catch (UnknownAccountException | IncorrectCredentialsException e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message","帐号或密码错误");
+        }catch (LockedAccountException e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message","帐号被锁定");
+        }catch (AuthenticationException e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message","帐号或密码错误");
         }
+        return "redirect:/";
 
     }
 
@@ -85,5 +97,19 @@ public class HomeController {
     public String homePage(){
 
         return "home";
+    }
+
+    /*@GetMapping("/logout")
+    public String logout(RedirectAttributes redirectAttributes){
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        redirectAttributes.addFlashAttribute("message","退出成功");
+        return "redirect:/";
+    }*/
+
+
+    @GetMapping("/401")
+    public String unauthorizedUrl(){
+        return "erroe/401";
     }
 }

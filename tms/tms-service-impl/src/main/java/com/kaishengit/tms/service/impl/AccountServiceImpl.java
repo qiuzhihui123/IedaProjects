@@ -8,6 +8,9 @@ import com.kaishengit.tms.mapper.AccountRolesMapper;
 import com.kaishengit.tms.service.AccountService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,57 +43,6 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRolesMapper accountRolesMapper;
 
-    /**
-     * 描述:系统登录
-     *
-     * @param accountMobile
-     * @param password
-     * @param requestIp
-     * @throws ServiceException 登录失败，抛出具体原因
-     * @参数:accountMobile 手机号码
-     * @参数:password 密码
-     * @参数:requestIp 登录ip
-     * @返回值com.kaishengit.tms.entity.Account 如果登录失败，该对象是null
-     */
-    @Override
-    public Account login(String accountMobile, String password, String requestIp) {
-
-        AccountExample accountExample = new AccountExample();
-        accountExample.createCriteria().andAccountMobileEqualTo(accountMobile);
-        List<Account> accountList = accountMapper.selectByExample(accountExample);
-        Account account = null;
-
-        if(accountList != null && !accountList.isEmpty()){
-            account = accountList.get(0);
-            System.out.println(salt);
-            if(password != null && DigestUtils.md5Hex(password + salt).equals(account.getAccountPassword())){
-                if(Account.STATE_NORMAL.equals(account.getAccountStatus())){
-                    AccountLoginLog accountLoginLog = new AccountLoginLog();
-                    accountLoginLog.setAccountId(account.getId());
-                    accountLoginLog.setLoginIp(requestIp);
-                    accountLoginLog.setLoginTime(new Date());
-
-                    accountLoginLogMapper.insertSelective(accountLoginLog);
-
-                    logger.info("{}登录系统",account);
-
-                }else if(Account.STATE_LOCKED.equals(account.getAccountStatus())){
-                    throw new ServiceException("帐号已锁定");
-
-                } else {
-                    throw new ServiceException("帐号被禁用");
-                }
-
-            }else {
-                throw new ServiceException("帐号密码错误");
-            }
-
-        }else{
-            throw new ServiceException("帐号或密码错误");
-        }
-
-        return null;
-    }
 
     /**
      * 描述:查找所有account
@@ -157,11 +109,48 @@ public class AccountServiceImpl implements AccountService {
 
         logger.info("新增帐号,{}",account);
     }
+
+    /**
+     * @param id
+     * @描述:查找account并封装rolesList集合在相应属性上
+     * @参数:[id(account的id)]
+     * @返回值com.kaishengit.tms.entity.Account
+     */
+    @Override
+    public Account findAccountWithRoles(Integer id) {
+        return accountMapper.findAccountWithRoles(id);
+    }
+
+    /**
+     * @param accountMobile
+     * @描述:根据mobile查找account对象
+     * @参数:[accountMobile] mobile
+     * @返回值com.kaishengit.tms.entity.Account account对象
+     */
+    @Override
+    public Account findAccountByMobile(String accountMobile) {
+        AccountExample accountExample = new AccountExample();
+        accountExample.createCriteria().andAccountMobileEqualTo(accountMobile);
+
+        return accountMapper.selectByExample(accountExample).get(0);
+
+    }
+
+    /**
+     * @param account
+     * @param requestIp
+     * @描述: 根据登录的account以及ip记录登录日志
+     * @参数:[account] 登录的account 以及登录的ip
+     * @返回值void
+     */
+    @Override
+    public void addLoginLog(Account account, String requestIp) {
+        AccountLoginLog accountLoginLog = new AccountLoginLog();
+        accountLoginLog.setLoginTime(new Date());
+        accountLoginLog.setAccountId(account.getId());
+        accountLoginLog.setLoginIp(requestIp);
+        accountLoginLogMapper.insertSelective(accountLoginLog);
+    }
 }
 
-/*+
-class  test{
-    public static void main(String[] args) {
-        System.out.println(DigestUtils.md5Hex("123#$#$%$%$"));
-    }
-}*/
+

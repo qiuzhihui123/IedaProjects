@@ -71,7 +71,7 @@
                                 </td>
                                 <td>${account.accountStatus}</td>
                                 <td><fmt:formatDate value="${account.createTime}" pattern="yyyy年MM月dd日"/> </td>
-                                <td><span ><a title="编辑" href=""><i class="fa fa-edit" style="color: blueviolet"></i></a></span> &nbsp <span title="删除"><i class="fa fa-remove" style="color: red"></i></span></td>
+                                <td><span ><a title="编辑" href="/manage/account/${account.id}/edit"><i class="fa fa-edit" style="color: blueviolet"></i></a></span> &nbsp <span title="删除"><i class="fa fa-remove" style="color: red"></i></span></td>
                             </tr>
 
                         </c:forEach>
