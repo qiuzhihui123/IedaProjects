@@ -145,9 +145,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     }
 
     /**
-     * 描述:根据id查找角色
-     *
-     * @param id
+     * 描述:根据角色id查找角色并带有该角色相应的权限
      * @参数:[id]
      * @返回值com.kaishengit.tms.entity.Roles
      */
@@ -255,6 +253,17 @@ public class RolePermissionServiceImpl implements RolePermissionService {
 
 
 
+    }
+
+    /**
+     * @param id
+     * @描述:根据account的id去查找该账户所具有的角色
+     * @参数:[id] 当前account的id
+     * @返回值java.util.List<com.kaishengit.tms.entity.Roles> roles的List集合
+     */
+    @Override
+    public List<Roles> findAccountRolesByAccountId(Integer id) {
+        return rolesMapper.selectRolesByAccountId(id);
     }
 
     /**

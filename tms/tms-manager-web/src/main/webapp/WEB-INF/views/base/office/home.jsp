@@ -25,7 +25,7 @@
     <!-- =============================================== -->
 
     <jsp:include page="../../include/sider.jsp">
-        <jsp:param name="menu" value="manage_roles"/>
+        <jsp:param name="menu" value="base_office"/>
     </jsp:include>
 
     <!-- =============================================== -->
@@ -35,7 +35,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                帐号管理
+                售票点管理
             </h1>
         </section>
 
@@ -43,10 +43,10 @@
         <section class="content">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">帐号列表</h3>
+                    <h3 class="box-title">售票点列表</h3>
                     <div class="box-tools">
-                        <shiro:hasPermission name="account:add">
-                            <a href="/manage/account/new" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> 新增帐号</a>
+                        <shiro:hasPermission name="office:add">
+                            <a href="/base/office/new" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> 新增售票点</a>
                         </shiro:hasPermission>
                     </div>
                 </div>
@@ -54,31 +54,27 @@
 
                     <table class="table">
                         <tr>
-                            <th>帐号名称</th>
+                            <th>售票点名称</th>
+                            <th>法人姓名</th>
                             <th>手机号</th>
-                            <th>角色</th>
-                            <th>帐号状态</th>
+                            <th>售票点状态</th>
                             <th>创建时间</th>
                             <th>#</th>
                         </tr>
 
-                        <c:forEach items="${accountList}" var="account">
+                        <c:forEach items="${officeList}" var="office">
                             <tr>
-                                <td>${account.accountName}</td>
-                                <td>${account.accountMobile}</td>
+                                <td>${office.officeName}</td>
+                                <td>${office.legalPersonName}</td>
+                                <td>${office.legalPersonMobile}</td>
+                                <td>${office.ticketOfficeStatus}</td>
+                                <td><fmt:formatDate value="${office.createTime}" pattern="yyyy年MM月dd日"/> </td>
                                 <td>
-                                    <c:forEach items="${account.rolesList}" var="role">
-                                        ${role.rolesName}&nbsp
-                                    </c:forEach>
-                                </td>
-                                <td>${account.accountStatus}</td>
-                                <td><fmt:formatDate value="${account.createTime}" pattern="yyyy年MM月dd日"/> </td>
-                                <td>
-                                    <shiro:hasPermission name="account:edit">
-                                        <span ><a title="编辑" href="/manage/account/${account.id}/edit"><i class="fa fa-edit" style="color: blueviolet"></i></a></span> &nbsp
+                                    <shiro:hasPermission name="office:edit">
+                                        <span ><a title="编辑" href="/base/office/${office.id}/edit"><i class="fa fa-edit" style="color: blueviolet"></i></a></span> &nbsp
                                     </shiro:hasPermission>
 
-                                    <shiro:hasPermission name="account:del">
+                                    <shiro:hasPermission name="office:del">
                                         <span title="删除"><i class="fa fa-remove" style="color: red"></i></span>
                                     </shiro:hasPermission>
                                 </td>

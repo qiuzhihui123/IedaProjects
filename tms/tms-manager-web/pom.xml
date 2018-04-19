@@ -18,6 +18,14 @@
     </parent>
 
     <dependencies>
+
+        <!--腾讯云-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.2.4</version>
+        </dependency>
+
         <dependency>
             <groupId>com.kaishengit</groupId>
             <artifactId>tms-service-impl</artifactId>

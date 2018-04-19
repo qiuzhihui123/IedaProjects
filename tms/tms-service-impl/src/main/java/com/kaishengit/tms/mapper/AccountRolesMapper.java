@@ -3,6 +3,8 @@ package com.kaishengit.tms.mapper;
 import com.kaishengit.tms.entity.AccountRolesExample;
 import com.kaishengit.tms.entity.AccountRolesKey;
 import java.util.List;
+
+import com.kaishengit.tms.entity.Roles;
 import org.apache.ibatis.annotations.Param;
 
 public interface AccountRolesMapper {
@@ -21,4 +23,5 @@ public interface AccountRolesMapper {
     int updateByExampleSelective(@Param("record") AccountRolesKey record, @Param("example") AccountRolesExample example);
 
     int updateByExample(@Param("record") AccountRolesKey record, @Param("example") AccountRolesExample example);
+
 }

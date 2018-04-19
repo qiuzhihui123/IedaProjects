@@ -31,4 +31,11 @@ public interface RolesMapper {
     List<Roles> findAllWithPermission();
 
     Roles findRolesByIdWithPermission(Integer id);
+
+    /** 
+     *@描述:根据当前登录的account的id找到他所具有的所有的角色List集合
+     *@参数:[id] 当前登录account的id
+     *@返回值java.util.List<com.kaishengit.tms.entity.Roles> 返回List<Roles>
+     */
+    List<Roles> selectRolesByAccountId(Integer id);
 }

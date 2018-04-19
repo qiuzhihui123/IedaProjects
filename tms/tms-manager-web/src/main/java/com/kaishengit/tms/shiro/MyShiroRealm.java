@@ -1,10 +1,14 @@
 package com.kaishengit.tms.shiro;
 
 import com.kaishengit.tms.entity.Account;
+import com.kaishengit.tms.entity.Permission;
+import com.kaishengit.tms.entity.Roles;
 import com.kaishengit.tms.service.AccountService;
+import com.kaishengit.tms.service.RolePermissionService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -15,11 +19,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 public class MyShiroRealm extends AuthorizingRealm{
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private RolePermissionService rolePermissionService;
 
     @Value("${salt}")
     private String salt;
@@ -28,7 +39,32 @@ public class MyShiroRealm extends AuthorizingRealm{
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+       Account account = (Account) principalCollection.getPrimaryPrincipal();
+       //查找当前account所拥有的角色
+        List<Roles> rolesList = rolePermissionService.findAccountRolesByAccountId(account.getId());
+
+        List<Permission> permissionList = new ArrayList<>();
+
+        Set<String> rolesName = new HashSet<>();
+
+        for (Roles role : rolesList){
+            rolesName.add(role.getRolesCode());
+            List<Permission> rolePermissionList = rolePermissionService.findRolesWithPermissionById(role.getId()).getPermissionList();
+            permissionList.addAll(rolePermissionList);
+        }
+
+       Set<String> permissionNames = new HashSet<>();
+        for(Permission permission : permissionList){
+            permissionNames.add(permission.getPermissionCode());
+        }
+
+        SimpleAuthorizationInfo  simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        simpleAuthorizationInfo.setStringPermissions(permissionNames);
+        simpleAuthorizationInfo.setRoles(rolesName);
+        System.out.println("---------------------------------");
+
+       return simpleAuthorizationInfo;
+
     }
 
     @Override
