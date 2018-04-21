@@ -1,11 +1,10 @@
 package com.kaishengit.tms.shiro;
 
-import com.kaishengit.tms.entity.Permission;
+import com.kaishengit.tms.entity.manage.Permission;
 import com.kaishengit.tms.service.RolePermissionService;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

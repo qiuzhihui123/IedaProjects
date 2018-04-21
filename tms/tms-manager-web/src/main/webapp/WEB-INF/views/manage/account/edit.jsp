@@ -1,6 +1,6 @@
-<%@ page import="com.kaishengit.tms.entity.Roles" %>
+<%@ page import="com.kaishengit.tms.entity.manage.Roles" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.kaishengit.tms.entity.Account" %>
+<%@ page import="com.kaishengit.tms.entity.manage.Account" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
     <!-- =============================================== -->
 
     <jsp:include page="../../include/sider.jsp">
-        <jsp:param name="menu" value="manage_roles"/>
+        <jsp:param name="menu" value="manage_account"/>
     </jsp:include>
 
     <!-- =============================================== -->

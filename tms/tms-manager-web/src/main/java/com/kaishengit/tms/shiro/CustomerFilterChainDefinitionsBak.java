@@ -1,6 +1,6 @@
 package com.kaishengit.tms.shiro;
 
-import com.kaishengit.tms.entity.Permission;
+import com.kaishengit.tms.entity.manage.Permission;
 import com.kaishengit.tms.service.RolePermissionService;
 import org.apache.shiro.config.Ini;
 import org.springframework.beans.factory.FactoryBean;

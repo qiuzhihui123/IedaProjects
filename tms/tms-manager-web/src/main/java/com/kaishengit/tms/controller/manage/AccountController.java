@@ -1,7 +1,7 @@
 package com.kaishengit.tms.controller.manage;
 
-import com.kaishengit.tms.entity.Account;
-import com.kaishengit.tms.entity.Roles;
+import com.kaishengit.tms.entity.manage.Account;
+import com.kaishengit.tms.entity.manage.Roles;
 import com.kaishengit.tms.service.AccountService;
 import com.kaishengit.tms.service.RolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;

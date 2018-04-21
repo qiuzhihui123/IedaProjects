@@ -1,7 +1,7 @@
 package com.kaishengit.tms.service;
 
-import com.kaishengit.tms.entity.Permission;
-import com.kaishengit.tms.entity.Roles;
+import com.kaishengit.tms.entity.manage.Permission;
+import com.kaishengit.tms.entity.manage.Roles;
 
 import java.util.List;
 

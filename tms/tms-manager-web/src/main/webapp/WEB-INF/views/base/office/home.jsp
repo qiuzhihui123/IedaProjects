@@ -43,7 +43,7 @@
         <section class="content">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">售票点列表</h3>
+                    <h3 class="box-title">售票点列表</h3> <c:if test="${not empty message}"><span class="alert alert-dangerous" style="padding-left: 80px;color: red">${message} </span></c:if>
                     <div class="box-tools">
                         <shiro:hasPermission name="office:add">
                             <a href="/base/office/new" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> 新增售票点</a>
@@ -64,51 +64,24 @@
 
                         <c:forEach items="${officeList}" var="office">
                             <tr>
-                                <td>${office.officeName}</td>
+                                <td><a href="/base/office/${office.id}/detail">${office.officeName}</a></td>
                                 <td>${office.legalPersonName}</td>
                                 <td>${office.legalPersonMobile}</td>
                                 <td>${office.ticketOfficeStatus}</td>
                                 <td><fmt:formatDate value="${office.createTime}" pattern="yyyy年MM月dd日"/> </td>
                                 <td>
-                                    <shiro:hasPermission name="office:edit">
+                                    <%--<shiro:hasPermission name="office:edit">
                                         <span ><a title="编辑" href="/base/office/${office.id}/edit"><i class="fa fa-edit" style="color: blueviolet"></i></a></span> &nbsp
                                     </shiro:hasPermission>
 
                                     <shiro:hasPermission name="office:del">
                                         <span title="删除"><i class="fa fa-remove" style="color: red"></i></span>
-                                    </shiro:hasPermission>
+                                    </shiro:hasPermission>--%>
                                 </td>
                             </tr>
-
                         </c:forEach>
-
-
                     </table>
 
-
-                    <%--<table class="table tree">
-                        <tbody>
-                        <c:forEach items="${accountList}" var="account">
-                            <tr class="bg-blue">
-                                <td>
-                                    帐号名称：<strong>${account.accountName}</strong> &nbsp&nbsp&nbsp&nbsp
-                                    帐号电话：<strong>${account.accountMobile}</strong>
-                                    <span class="pull-right">
-                                        <a style="color: #fff;" href="/manage/account/${account.id}/edit"><i class="fa fa-pencil"></i></a>
-                                        <a style="color: #fff;" class="delLink" rel="${account.id}" href="javascript:;"><i class="fa fa-trash"></i></a>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <c:forEach items="${account.rolesList}" var="role">
-                                        <i class="fa fa-circle"></i> ${role.rolesName}
-                                    </c:forEach>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>--%>
                 </div>
             </div>
         </section>

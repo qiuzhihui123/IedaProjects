@@ -1,30 +1,17 @@
 package com.kaishengit.tms.controller.Base;
 
 
-import com.kaishengit.tms.entity.TicketOfficeInfermation;
+import com.kaishengit.tms.dto.ResultHandler;
+import com.kaishengit.tms.entity.base.TicketOfficeInfermation;
+import com.kaishengit.tms.exception.ServiceException;
 import com.kaishengit.tms.service.TicketOfficeService;
-import com.qcloud.cos.COSClient;
-import com.qcloud.cos.ClientConfig;
-import com.qcloud.cos.auth.AnonymousCOSCredentials;
-import com.qcloud.cos.auth.BasicCOSCredentials;
-import com.qcloud.cos.auth.COSCredentials;
-import com.qcloud.cos.http.HttpMethodName;
-import com.qcloud.cos.model.ObjectMetadata;
-import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
-import com.qcloud.cos.region.Region;
-import org.apache.commons.codec.digest.HmacUtils;
+import com.kaishengit.tms.util.QiNiuCloudTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Date;
 import java.util.List;
 
 
@@ -37,8 +24,11 @@ import java.util.List;
 @RequestMapping("/base/office")
 public class TicketOfficeController {
 
+
     @Autowired
     TicketOfficeService ticketOfficeService;
+    @Autowired
+    QiNiuCloudTokenUtil qiNiuCloudTokenUtil;
 
     /**
      *@描述:访问售票点目录
@@ -57,65 +47,100 @@ public class TicketOfficeController {
 
     /**
      *@描述:请求转发到新增售票点的页面
-     *@参数:[]
+     *@参数:[model] 传值对象带有 uploadToken
      *@返回值java.lang.String
      */
     @GetMapping("/new")
-    public String newOffice(){
-
+    public String newOffice(Model model){
+        model.addAttribute("token", qiNiuCloudTokenUtil.getToken());
         return "base/office/new";
     }
 
     /**
-     *@描述:接收提交的售票点信息并存到数据库
-     *@参数:[]
+     *@描述: 接收提交的售票点信息并存到数据库，并根据这个对象录入售票点信息并创建售票点帐号
+     *@参数:[ticketOfficeInfermation] 售票点信息对象
      *@返回值java.lang.String
      */
     @PostMapping("/new")
     public String saveOffice(TicketOfficeInfermation ticketOfficeInfermation,
                              RedirectAttributes redirectAttributes){
-
+        ticketOfficeService.addATicketOffice(ticketOfficeInfermation);
         redirectAttributes.addFlashAttribute("message","储存成功");
         return "redirect:/base/office";
     }
 
-
-
-}
-class test {
-    public static void main(String[] args) {
-        String bucketName = "qiuhui-tms-1256188839";
-        String key = "/";
-        Date expirationTime = new Date(System.currentTimeMillis() + 30 * 60 * 1000);
-        // 1 初始化用户身份信息, 匿名身份不用传入ak sk
-        COSCredentials cred = new AnonymousCOSCredentials();
-
-        // 2 设置bucket的区域, COS地域的简称请参照 https://cloud.tencent.com/document/product/436/6224
-        ClientConfig clientConfig = new ClientConfig(new Region("ap-beijing"));
-        // 3 生成cos客户端
-        COSClient cosclient = new COSClient(cred, clientConfig);
-
-
-        URL url = cosclient.generatePresignedUrl(bucketName, key, expirationTime, HttpMethodName.POST);
-        System.out.println(url);
+    /**
+     *@描述:根据传过来的id查找到对应的售票点以及它关联的Account对象返回
+     *@参数:[id, model] 售票点的id，传参的model对象
+     *@返回值java.lang.String
+     */
+    @GetMapping("/{id:\\d+}/detail")
+    public String toDetail(@PathVariable Integer id,Model model){
+        TicketOfficeInfermation office = ticketOfficeService.findOfficeWithAccountByOfficeId(id);
+        model.addAttribute("office",office);
+        return "base/office/detail";
     }
-}
 
-class test2{
-    public static void main(String[] args) {
-        // 1 初始化用户身份信息(secretId, secretKey)
-        COSCredentials cred = new BasicCOSCredentials("AKIDd5IFwN3WcUCqHSu1RdnkV2LVTCgvniFY ", "ECvNZYIn4B7pKacPxGJ6evwhCRu9AwUn");
-// 2 设置bucket的区域, COS地域的简称请参照 https://cloud.tencent.com/document/product/436/6224
-        ClientConfig clientConfig = new ClientConfig(new Region("ap-beijing"));
-// 3 生成cos客户端
-        COSClient cosClient = new COSClient(cred, clientConfig);
-// bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
-        String bucketName = "qiuhui-tms-1256188839";
-
-        File localFile = new File("D:\\1.jpg");
-// 指定要上传到 COS 上的路径
-        String key = "/img";
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, localFile);
-        PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+    /**
+     *@描述:根据传过来的 售票点id 找到该售票点并跳转到编辑页面
+     *@参数:[id,售票点id;model传值对象]
+     *@返回值java.lang.String
+     */
+    @GetMapping("/{id:\\d+}/edit")
+    public String officeEdit(@PathVariable Integer id,Model model){
+        TicketOfficeInfermation office = ticketOfficeService.findOfficeWithAccountByOfficeId(id);
+        String token = qiNiuCloudTokenUtil.getToken();
+        model.addAttribute("token",token);
+        model.addAttribute("office",office);
+        return "base/office/edit";
     }
+
+    /**
+     *@描述: 根据解析出的售票点对象更新对应id的售票点
+     *@参数:[officeId, ticketOfficeInfermation, redirectAttributes]
+     *@返回值java.lang.String
+     */
+    @PostMapping("/{id:\\d+}/edit")
+    public  String officeUpdate(@PathVariable(name = "id",required = false) Integer officeId,
+                                TicketOfficeInfermation ticketOfficeInfermation,
+                                RedirectAttributes redirectAttributes){
+        try {
+            ticketOfficeService.updateOfficeAndAccountByOfficeId(ticketOfficeInfermation);
+        }catch (ServiceException e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message","更新失败，请稍后再试");
+            return "redirect:/base/office"+officeId+"/detail";
+        }
+        redirectAttributes.addFlashAttribute("message","更新成功");
+        return "redirect:/base/office/"+officeId+"/detail";
+    }
+
+    /**
+     *@描述: 根据异步请求传过来的售票点id进行删除售票点的相关操作，并返回json数据
+     *@参数:[id]
+     *@返回值com.kaishengit.tms.dto.ResultHandler
+     */
+    @GetMapping("/{id:\\d+}/del")
+    public @ResponseBody ResultHandler officeDel(@PathVariable Integer id){
+
+        ticketOfficeService.deleteOfficeByOfficeId(id);
+
+        return ResultHandler.success();
+    }
+
+    /**
+     *@描述:根据id禁用销售点帐号
+     *@参数:[id]
+     *@返回值com.kaishengit.tms.dto.ResultHandler json数据
+     */
+    @GetMapping("/{id:\\d+}/forbidden")
+    public @ResponseBody ResultHandler oficeAccountForbidden(@PathVariable Integer id){
+        ticketOfficeService.forbiddenOfficeAccountById(id);
+
+        return ResultHandler.success();
+    }
+
+
 }
+
+

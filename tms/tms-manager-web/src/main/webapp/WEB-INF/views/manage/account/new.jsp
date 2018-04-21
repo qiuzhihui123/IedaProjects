@@ -122,6 +122,7 @@
 <script>
     $(function () {
         $("#saveBtn").click(function () {
+
             $("#saveForm").submit();
         });
 

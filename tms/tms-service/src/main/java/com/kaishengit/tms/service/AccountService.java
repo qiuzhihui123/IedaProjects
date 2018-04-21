@@ -1,6 +1,6 @@
 package com.kaishengit.tms.service;
 
-import com.kaishengit.tms.entity.Account;
+import com.kaishengit.tms.entity.manage.Account;
 
 import java.util.List;
 

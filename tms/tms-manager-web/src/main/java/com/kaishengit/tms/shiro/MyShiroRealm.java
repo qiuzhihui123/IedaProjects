@@ -1,24 +1,20 @@
 package com.kaishengit.tms.shiro;
 
-import com.kaishengit.tms.entity.Account;
-import com.kaishengit.tms.entity.Permission;
-import com.kaishengit.tms.entity.Roles;
+import com.kaishengit.tms.entity.manage.Account;
+import com.kaishengit.tms.entity.manage.Permission;
+import com.kaishengit.tms.entity.manage.Roles;
 import com.kaishengit.tms.service.AccountService;
 import com.kaishengit.tms.service.RolePermissionService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

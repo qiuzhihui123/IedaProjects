@@ -37,11 +37,11 @@
             <li class="header">系统管理</li>
             <!-- 客户管理 -->
             <shiro:hasPermission name="account:query">
-                 <li class="${param.menu == 'customersmy' ? 'active' : '' }"><a href="/manage/account"><i class="fa fa-circle-o "></i> 帐号管理</a></li>
+                 <li class="${param.menu == 'manage_account' ? 'active' : '' }"><a href="/manage/account"><i class="fa fa-circle-o "></i> 帐号管理</a></li>
             </shiro:hasPermission>
 
             <shiro:hasPermission name="roles:query">
-                    <li class="${param.menu == 'customerspub' ? 'active' : '' }"><a href="/manage/roles"><i class="fa fa-circle-o "></i> 角色管理</a></li>
+                    <li class="${param.menu == 'manage_roles' ? 'active' : '' }"><a href="/manage/roles"><i class="fa fa-circle-o "></i> 角色管理</a></li>
 
             </shiro:hasPermission>
 

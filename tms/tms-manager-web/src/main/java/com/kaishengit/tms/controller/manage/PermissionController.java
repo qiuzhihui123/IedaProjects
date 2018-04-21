@@ -1,7 +1,7 @@
 package com.kaishengit.tms.controller.manage;
 
 import com.kaishengit.tms.dto.ResultHandler;
-import com.kaishengit.tms.entity.Permission;
+import com.kaishengit.tms.entity.manage.Permission;
 import com.kaishengit.tms.exception.ServiceException;
 import com.kaishengit.tms.service.RolePermissionService;
 import com.kaishengit.tms.shiro.CustomerFilterChainDefinitions;

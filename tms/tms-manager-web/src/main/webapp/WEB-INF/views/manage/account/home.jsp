@@ -25,7 +25,7 @@
     <!-- =============================================== -->
 
     <jsp:include page="../../include/sider.jsp">
-        <jsp:param name="menu" value="manage_roles"/>
+        <jsp:param name="menu" value="manage_account"/>
     </jsp:include>
 
     <!-- =============================================== -->
